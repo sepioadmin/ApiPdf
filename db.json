@@ -1,1 +1,583 @@
-{"swagger":"2.0","info":{"version":"1.0 (2.5.26.0)","title":"Sepio Prime API","description":"Sepio Prime API methods and models","contact":{"name":"Support Team","email":"support@sepio.systems"}},"paths":{"/prime/webui/agents":{"get":{"tags":["Agents"],"summary":"Get Agents","operationId":"GetAgents","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"Uuid","in":"query","description":"Sepio Agent’s instance unique identifier.","required":false,"type":"string"},{"name":"HostIdentifier","in":"query","description":"Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance.","required":false,"type":"string"},{"name":"IpAddress","in":"query","description":"Sepio Agent IP Address.","required":false,"type":"string"},{"name":"Status","in":"query","description":"Used for both agent status (arm/free) and connection status (connect/disconnect).","required":false,"type":"string"},{"name":"ContainsVulnerablePeripheralOrWLV","in":"query","description":"Indicate whether the Agent contains one or more peripheral that is vulnerable or white list violation.","required":false,"type":"string"},{"name":"LastConfiguration","in":"query","description":"Last configuration time.","required":false,"type":"string"},{"name":"Version","in":"query","description":"Version of Sepio Agent.","required":false,"type":"string"},{"name":"License","in":"query","description":"Used for both license status (Pending/Expired/Invalid/Activated) and license experation date.","required":false,"type":"string"},{"name":"OsVersion","in":"query","description":"Version of the Operation System that runs at Sepio Agent.","required":false,"type":"string"},{"name":"LastUpdated","in":"query","description":"Last Updated time. Format yyyy-MM-dd hh:ss:mm","required":false,"type":"string"},{"name":"ExpirationDate","in":"query","description":"License expiration date. Format MM/dd/yyyy","required":false,"type":"string"},{"name":"Severity","in":"query","description":"Agent entry severity, numeric values are:\r\n\"0\" for disconnected device.\r\n\"10\" for device with all peripherals approved.\r\n\"70\" At list one peripheral not approved and agent in Free mode.\r\n\"100\" At list one peripheral not approved and agent in Armed mode.","required":false,"type":"string"},{"name":"SortBy","in":"query","description":"For sorting the result set, specify the sort category and order.\r\nSupported SortBy values are property_asc or property_desc for example OsVersion_asc, IpAddress_desc.","required":false,"type":"string"},{"name":"PageNumber","in":"query","description":"When querying for paged set of results, specify the required page number here.","required":false,"type":"integer","format":"int32"},{"name":"PageSize","in":"query","description":"When querying for paged set of results, specify the required page size here.","required":false,"type":"integer","format":"int32"},{"name":"GlobalSearch","in":"query","description":"For filtering the result set, specify a global search text here.","required":false,"type":"string"}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/AgentsViewDataWrapper"}}}}},"/prime/webui/agents/configuration":{"post":{"tags":["Agents"],"operationId":"UpdateAgentsConfiguration","consumes":["application/json-patch+json","application/json","text/json","application/*+json"],"produces":[],"parameters":[{"name":"viewReq","in":"body","required":false,"schema":{"uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/AgentPendingConfigurationWrapper"}}}],"responses":{"200":{"description":"Success"}}}},"/prime/webui/agents/deleteAgents":{"post":{"tags":["Agents"],"operationId":"DeletAgent","consumes":["application/json-patch+json","application/json","text/json","application/*+json"],"produces":[],"parameters":[{"name":"agentsUuidToDelete","in":"body","required":false,"schema":{"uniqueItems":false,"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Success"}}}},"/prime/webui/peripherals/aggregated":{"get":{"tags":["Aggregation"],"summary":"Get Aggregated peripherals","operationId":"GetAggAgents","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"Device","in":"query","description":"Caption Description.","required":false,"type":"string"},{"name":"HostUuid","in":"query","description":"Sepio Agent’s instance unique identifier.","required":false,"type":"string"},{"name":"HostIdentifier","in":"query","description":"Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance","required":false,"type":"string"},{"name":"Vid","in":"query","description":"USB vendor ID of the peripheral device.","required":false,"type":"string"},{"name":"Pid","in":"query","description":"USB product ID of the peripheral device.","required":false,"type":"string"},{"name":"Quantity","in":"query","description":"Quantity of detected peripheral devices. For example, 200/252 means that this peripheral device exists in 200 agents and the total Agent count is 252.","required":false,"type":"string"},{"name":"Vendor","in":"query","description":"Vendor of the peripheral.","required":false,"type":"string"},{"name":"ProductInfo","in":"query","description":"Product Information.","required":false,"type":"string"},{"name":"Manufacturer","in":"query","description":"Manufacturer’s textual name (when applicable) of the peripheral device.","required":false,"type":"string"},{"name":"NotApprovedPeripheral","in":"query","description":"Number of peripherals devices that are not approved.","required":false,"type":"string"},{"name":"DevIcon","in":"query","description":" Icon enumeration of the peripheral device. Numerical values are:\r\n \"1\" - Keyboard, \"2\" - Mouse, \"3\" – Storage, \"4\" – Hub, \"5\" – Communication Adapter, \r\n\"6\" – Mobile, \"7\" – Audio, \"8\" - Video, \"9\" – Wireless, \"10\" - Security token, \"11\" – Smartcard\r\n, \"12\" - Rubber ducky, \"13\" – Printer, \"14\" – HID.","required":false,"type":"string"},{"name":"Vulnerability","in":"query","description":"A string indication of a known device vulnerability (if exists).","required":false,"type":"string"},{"name":"Severity","in":"query","description":"Agent entry severity, numeric values are:\r\n\"0\" for disconnected device.\r\n\"10\" for device with all peripherals approved.\r\n\"70\" At list one peripheral not approved and agent in Free mode.\r\n\"100\" At list one peripheral not approved and agent in Armed mode.","required":false,"type":"integer","format":"int32"},{"name":"SortBy","in":"query","description":"For sorting the result set, specify the sort category and order.\r\nSupported SortBy values are property_asc or property_desc for example Vulnerability_asc, Quantity_desc.","required":false,"type":"string"},{"name":"PageSize","in":"query","description":"When querying for paged set of results, specify the required page size here.","required":false,"type":"integer","format":"int32"},{"name":"PageNumber","in":"query","description":"When querying for paged set of results, specify the required page number here.","required":false,"type":"integer","format":"int32"},{"name":"GlobalSearch","in":"query","description":"For filtering the result set, specify a global search text here.","required":false,"type":"string"}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/PeripheralAggregatedViewWrapper"}}}}},"/prime/webui/peripherals/aggregated/command":{"post":{"tags":["Aggregation"],"operationId":"UpdateAgentsAggPeripheralsCommand","consumes":["application/json-patch+json","application/json","text/json","application/*+json"],"produces":[],"parameters":[{"name":"viewReq","in":"body","required":false,"schema":{"$ref":"#/definitions/PeripheralAggCommandsViewResource"}}],"responses":{"200":{"description":"Success"}}}},"/prime/webui/Auth/signin":{"post":{"tags":["Auth"],"operationId":"SignInAsync","consumes":["application/json-patch+json","application/json","text/json","application/*+json"],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"model","in":"body","required":false,"schema":{"$ref":"#/definitions/SignInRequest"}}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/SignInResponse"}}}}},"/prime/webui/Events/GetEvents":{"get":{"tags":["EventApi"],"summary":"Get Events","operationId":"GetEvents","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"Date","in":"query","description":"System events entry date and time. Format yyyy-MM-dd hh:ss:mm.MI.","required":false,"type":"string"},{"name":"Severity","in":"query","description":"System events entry severity. Currently supported severity values are Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug.","required":false,"type":"string"},{"name":"Category","in":"query","description":"System events entry category. Currently supported categories are USB and Network.","required":false,"type":"string"},{"name":"Source","in":"query","description":"System events entry source.","required":false,"type":"string"},{"name":"Description","in":"query","description":"System events entry textual description.","required":false,"type":"string"},{"name":"Details","in":"query","description":"System events entry additional textual details.","required":false,"type":"string"},{"name":"PeripheralIcon","in":"query","description":" Icon enumeration of the peripheral device. Numerical values are:\r\n \"1\" - Keyboard, \"2\" - Mouse, \"3\" – Storage, \"4\" – Hub, \"5\" – Communication Adapter, \r\n\"6\" – Mobile, \"7\" – Audio, \"8\" - Video, \"9\" – Wireless, \"10\" - Security token, \"11\" – Smartcard\r\n, \"12\" - Rubber ducky, \"13\" – Printer, \"14\" – HID.","required":false,"type":"string"},{"name":"SortBy","in":"query","description":"For sorting the result set, specify the sort category and order.\r\nSupported SortBy values are property_asc or property_desc, for example PeripheralIcon_asc, Category_desc.","required":false,"type":"string"},{"name":"PageNumber","in":"query","description":"When querying for paged set of results, specify the required page number here.","required":false,"type":"integer","format":"int32"},{"name":"PageSize","in":"query","description":"When querying for paged set of results, specify the required page size here.","required":false,"type":"integer","format":"int32"},{"name":"GlobalSearch","in":"query","description":"For filtering the result set, specify a global search text here.","required":false,"type":"string"}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/PrimeEventViewWrapper"}}}}},"/prime/webui/Events/GetAuditTrails":{"get":{"tags":["EventApi"],"summary":"Get Audit Trails","operationId":"GetAuditTrail","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"Date","in":"query","description":"Audit trail entry date and time. Format yyyy-MM-dd hh:ss:mm.MI.","required":false,"type":"string"},{"name":"Severity","in":"query","description":"Audit trail entry severity. Currently supported severity values are Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug.","required":false,"type":"string"},{"name":"Category","in":"query","description":"Audit trail entry category. Currently supported categories are USB, Network, User, System.","required":false,"type":"string"},{"name":"User","in":"query","description":"Audit trail entry user information.","required":false,"type":"string"},{"name":"Description","in":"query","description":"Audit trail entry textual description.","required":false,"type":"string"},{"name":"Details","in":"query","description":"Audit trail entry additional textual details.","required":false,"type":"string"},{"name":"SortBy","in":"query","description":"For sorting the result set, specify the sort category and order.\r\nSupported SortBy values are property_asc or property_desc for example Category_asc, Date_desc.","required":false,"type":"string"},{"name":"PageNumber","in":"query","description":"When querying for paged set of results, specify the required page number here.","required":false,"type":"integer","format":"int32"},{"name":"PageSize","in":"query","description":"When querying for paged set of results, specify the required page size here.","required":false,"type":"integer","format":"int32"},{"name":"GlobalSearch","in":"query","description":"For filtering the result set, specify a global search text here.","required":false,"type":"string"}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/AuditTrailViewWrapper"}}}}},"/prime/webui/Switches/PollNowSwitch":{"post":{"tags":["NetApi"],"operationId":"PollNowSwitchConnection","consumes":["application/json-patch+json","application/json","text/json","application/*+json"],"produces":[],"parameters":[{"name":"switchId","in":"body","required":false,"schema":{"uniqueItems":false,"type":"array","items":{"type":"string"}}}],"responses":{"200":{"description":"Success"}}}},"/prime/webui/Switches/Switches":{"get":{"tags":["NetApi"],"summary":"Get all switches","operationId":"GetSwitches","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[],"responses":{"200":{"description":"Success","schema":{"uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/SwitchDataViewResource"}}}}}},"/prime/webui/Switches/Ports":{"get":{"tags":["NetApi"],"summary":"Get Ports","operationId":"GetPorts","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"portViewQuery","in":"query","description":"Dictionary of key value for search, the supported keys are switchIp, switchName, portID,\r\n            assignedName, assignedName, portMacsDataCount, linkPartnerData, fpData, portStatusString, cdpPlatforms, pageSize, pageNumber, sortBy\r\n            For example if you want to get port of switch with\r\n            switchName Floor1 and portID Gi1/0/11 you need to send in the query Ports?switchName=Floor1&amp;portID=Gi1/0/11.","required":false,"type":"object"}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/TableWrapper[SwitchPortViewResource]"}}}}},"/prime/webui/peripherals":{"get":{"tags":["Peripherals"],"summary":"Get Agents Peripherals","operationId":"GetPeripherals","consumes":[],"produces":["text/plain","application/json","text/json"],"parameters":[{"name":"Device","in":"query","description":"Caption Description.","required":false,"type":"string"},{"name":"HostUuid","in":"query","description":"Sepio Agent’s instance unique identifier.","required":false,"type":"string"},{"name":"HostIdentifier","in":"query","description":"Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance","required":false,"type":"string"},{"name":"Vid","in":"query","description":"USB vendor ID of the peripheral device.","required":false,"type":"string"},{"name":"Pid","in":"query","description":"USB product ID of the peripheral device.","required":false,"type":"string"},{"name":"Vendor","in":"query","description":"Vendor of the peripheral.","required":false,"type":"string"},{"name":"ProductInfo","in":"query","description":"Product Information.","required":false,"type":"string"},{"name":"Manufacturer","in":"query","description":"Manufacturer’s textual name (when applicable) of the peripheral device.","required":false,"type":"string"},{"name":"SerialNumber","in":"query","description":"Peripheral device serial number.","required":false,"type":"string"},{"name":"DevIcon","in":"query","description":" Icon enumeration of the peripheral device. Numerical values are:\r\n \"1\" - Keyboard, \"2\" - Mouse, \"3\" – Storage, \"4\" – Hub, \"5\" – Communication Adapter, \r\n\"6\" – Mobile, \"7\" – Audio, \"8\" - Video, \"9\" – Wireless, \"10\" - Security token, \"11\" – Smartcard\r\n, \"12\" - Rubber ducky, \"13\" – Printer, \"14\" – HID.","required":false,"type":"string"},{"name":"Vulnerability","in":"query","description":"A string indication of a known device vulnerability (if exists).","required":false,"type":"string"},{"name":"Severity","in":"query","description":"Agent entry severity, numeric values are:\r\n\"0\" for disconnected device.\r\n\"10\" for device with all peripherals approved.\r\n\"70\" At list one peripheral not approved and agent in Free mode.\r\n\"100\" At list one peripheral not approved and agent in Armed mode.","required":false,"type":"integer","format":"int32"},{"name":"SortBy","in":"query","description":"For sorting the result set, specify the sort category and order.\r\nSupported SortBy values are property_asc or property_desc for example Vulnerability_asc, Quantity_desc.","required":false,"type":"string"},{"name":"PageSize","in":"query","description":"When querying for paged set of results, specify the required page size here.","required":false,"type":"integer","format":"int32"},{"name":"PageNumber","in":"query","description":"When querying for paged set of results, specify the required page number here.","required":false,"type":"integer","format":"int32"},{"name":"GlobalSearch","in":"query","description":"For filtering the result set, specify a global search text here.","required":false,"type":"string"}],"responses":{"200":{"description":"Success","schema":{"$ref":"#/definitions/PeripheralViewDataWrapper"}}}}},"/prime/webui/peripherals/command":{"post":{"tags":["Peripherals"],"operationId":"UpdateAgentsPeripherCommands","consumes":["application/json-patch+json","application/json","text/json","application/*+json"],"produces":[],"parameters":[{"name":"viewReq","in":"body","required":false,"schema":{"$ref":"#/definitions/PeripheralCommandsViewResource"}}],"responses":{"200":{"description":"Success"}}}}},"definitions":{"AgentsViewDataWrapper":{"type":"object","properties":{"recordsTotal":{"format":"int32","description":"The total number of Sepio Agents","type":"integer"},"recordsFiltered":{"format":"int32","description":"The number of listed Sepio Agents after applying the query filters","type":"integer"},"data":{"description":"Result agents","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/AgentViewData"}}}},"AgentViewData":{"description":"Resource for agent view i.e agents table row.","type":"object","properties":{"hostIdentifier":{"description":"Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance","type":"string"},"localIpAddress":{"description":"Sepio Agent’s IP address.","type":"string"},"uuid":{"description":"Sepio Agent’s instance unique identifier.","type":"string"},"operationalStatus":{"description":"Current operational status of Sepio Agent. Supported values are Armed, Free.","type":"string"},"connectionStatus":{"description":"Indication of connectivity between the Sepio Agent and Sepio Prime.\r\nSupported values are Connected, Disconnected.","type":"string"},"approvedAndPresent":{"format":"int32","description":"The number of peripheral devices that are approved and are currently connected to the workstation (running Sepio Agent).","type":"integer"},"approvedAndDisconnected":{"format":"int32","description":"The number of peripheral devices that are approved and are currently disconnected from the workstation (running Sepio Agent).","type":"integer"},"notApproved":{"format":"int32","description":"Number of peripherals devices that are not approved.","type":"integer"},"latestEventText":{"description":"Textual details of the last event of the Agent.","type":"string"},"latestMinus1EventText":{"description":"Textual details of the event before the last event of the Agent.","type":"string"},"latestMinus2EventText":{"description":"Textual details of the 3rd newest event of the Agent.","type":"string"},"serviceVersion":{"description":"Sepio Agent service version.","type":"string"},"lastUpdated":{"format":"date-time","description":"Date and time indication of the last time Sepio Agent communicated with Sepio Prime.","type":"string"},"licenseStatus":{"description":"License status string.","type":"string"},"expirationDate":{"description":"Sepio Agent’s license expiry date.","type":"string"},"lastConfiguered":{"format":"date-time","description":"Date and time indication of the last configuration update of an Agent.","type":"string"},"kbDriverVersion":{"description":"Sepio Agent’s kernel driver version.","type":"string"},"licenseAccountId":{"description":"License Account Id.","maxLength":100,"minLength":0,"type":"string"},"licenseAccountName":{"description":"License Account Name.","maxLength":100,"minLength":0,"type":"string"},"severity":{"format":"int32","description":"Agent entry severity, numeric values are:\r\n\"0\" for disconnected device.\r\n\"10\" for device with all peripherals approved.\r\n\"70\" At list one peripheral not approved and agent in Free mode.\r\n\"100\" At list one peripheral not approved and agent in Armed mode.","type":"integer"},"inAction":{"description":"Indicate that there is pending command for Agent waiting to execute.","type":"boolean"},"pcModel":{"description":"Hardware (PC platform) information of the workstation running Sepio Agent.","type":"string"},"nicsText":{"description":"Chained list of the network interface cards (all) of a workstation running Sepio Prime.","type":"string"},"modelToolTip":{"description":"Hardware (PC platform) ToolTip information.","type":"string"},"containsVulnerablePeripheralOrWLV":{"description":"Indicate whether the Agent contains one or more peripheral that is vulnerable or white list violation.","type":"string"},"osVersion":{"description":"Operating system information of the workstation running Sepio Agent.","type":"string"},"runningMode":{"description":"Running Mode Flags.","type":"string"},"connectedSwitchIp":{"description":"When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the IP address of the switch.","type":"string"},"connectedSwitchName":{"description":"When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the assigned name of the switch.","type":"string"},"connectedPortId":{"description":"When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the port number in the switch.","type":"string"},"connectedPortName":{"description":"When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the port ID in the switch.","type":"string"},"ethernetsCount":{"format":"int32","description":"Number of agent interfaces as seen at network switch ports.","type":"integer"}}},"AgentPendingConfigurationWrapper":{"type":"object","properties":{"uuid":{"type":"string"},"agentConfigViewResource":{"$ref":"#/definitions/AgentPendingConfigViewResource"}}},"AgentPendingConfigViewResource":{"type":"object","properties":{"isSystemArmed":{"type":"string"},"isSystemLocked":{"type":"string"},"centralizedConsoleIP":{"type":"string"}}},"PeripheralAggregatedViewWrapper":{"type":"object","properties":{"recordsTotal":{"format":"int32","description":"The total number of aggregated peripherals.","type":"integer"},"recordsFiltered":{"format":"int32","description":"The number of listed aggregated peripherals after applying the query filters","type":"integer"},"data":{"description":"Result aggregated peripherals","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/PeripheralAggregatedViewData"}}}},"PeripheralAggregatedViewData":{"description":"Aggregated perippherals data per peripheral identifier (type)","type":"object","properties":{"description":{"description":"Textual description of the peripheral device.","type":"string"},"manufacturer":{"description":"Manufacturer’s textual name (when applicable) of the peripheral device.","type":"string"},"caption":{"description":"OS name information of the peripheral device.","type":"string"},"creationClassName":{"description":"Additional OS info.","type":"string"},"deviceID":{"description":"OS level device identifier.","type":"string"},"vid":{"description":"USB vendor ID of the peripheral device.","type":"string"},"pid":{"description":"USB product ID of the peripheral device.","type":"string"},"classCode":{"description":"USB standard Class of the peripheral device.","type":"string"},"subclassCode":{"description":"USB standard Protocol of the peripheral device.","type":"string"},"devIcon":{"format":"int32","description":" Icon enumeration of the peripheral device. Numerical values are:\r\n \"1\" - Keyboard, \"2\" - Mouse, \"3\" – Storage, \"4\" – Hub, \"5\" – Communication Adapter, \r\n\"6\" – Mobile, \"7\" – Audio, \"8\" - Video, \"9\" – Wireless, \"10\" - Security token, \"11\" – Smartcard\r\n, \"12\" - Rubber ducky, \"13\" – Printer, \"14\" – HID.","type":"integer"},"protocolCode":{"description":"USB standard Protocol of the peripheral device.","type":"string"},"guiVid":{"description":"USB vendor ID (formatted to the system GUI) of the peripheral device.","type":"string"},"guiPid":{"description":"USB product ID (formatted to the system GUI) of the peripheral device.","type":"string"},"parentDeviceID":{"description":"OS level parent device identifier.","type":"string"},"quantity":{"description":"Quantity of detected peripheral devices. For example, 200/252 means that this peripheral device exists in 200 agents and the total Agent count is 252.","type":"string"},"agentsHostIds":{"description":"List of Agents host IDs, will be max 10 size count, others will be ignored.","uniqueItems":false,"type":"array","items":{"type":"string"}},"severity":{"format":"int32","description":"A risk level indication. A value between 0 to 100 that is: \r\n0 if this peripheral device is approved in all of the Agents.\r\n70 if this peripheral device is approved only in some of the Agents.\r\n100 if this peripheral device is not approved in any of the Agents","type":"integer"},"notApprovedPeripheral":{"format":"int32","description":"Number of peripherals devices that are not approved.","type":"integer"},"vulnerability":{"description":"A string indication of a known device vulnerability (if exists).","type":"string"},"adminStatus":{"description":"Can be combination of values with '|' seperator: \r\n\"WLV\" - White List Violation, \"WLM\" - White List Match, \"BLM\" - Black List Match, \"DMD\" - Device Manager Disabled, \"FDD\" - Filter Driver Disabled\r\nFor example: \"DMD|FDD\"","type":"string"}}},"PeripheralAggCommandsViewResource":{"type":"object","properties":{"opCode":{"type":"string"},"aggPeripheralsIds":{"uniqueItems":false,"type":"array","items":{"type":"string"}}}},"SignInRequest":{"type":"object","properties":{"username":{"type":"string"},"password":{"type":"string"}}},"SignInResponse":{"type":"object","properties":{"token":{"type":"string"}}},"PrimeEventViewWrapper":{"description":"Events filtered results with meta data.","type":"object","properties":{"recordsTotal":{"format":"int32","description":"The total number of listed peripheral devices after applying the query filters.","type":"integer"},"recordsFiltered":{"format":"int32","description":"The number of listed system events after applying the query filters.","type":"integer"},"data":{"description":"Events result.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/PrimeEventViewResource"}}}},"PrimeEventViewResource":{"description":"Event result entry.","type":"object","properties":{"eventID":{"format":"int32","description":"Unique identifier of the system event entry.","type":"integer"},"category":{"description":"System events entry category. Currently supported categories are USB, Network, User, System.","type":"string"},"creationTime":{"format":"date-time","description":"System event entry creation date and time. Format yyyy-MM-dd hh:ss:mm.MI.","type":"string"},"eventCode":{"description":"CEF Signature ID.","type":"string"},"severity":{"format":"int32","description":"System events entry severity. Currently supported severity values are Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug.","type":"integer"},"eventEntityID":{"description":"Unique identifier of the system event entry.","type":"string"},"description":{"description":"System events entry textual description.","type":"string"},"peripheralIcon":{"description":" Icon enumeration of the peripheral device. Numerical values are:\r\n \"1\" - Keyboard, \"2\" - Mouse, \"3\" – Storage, \"4\" – Hub, \"5\" – Communication Adapter, \r\n\"6\" – Mobile, \"7\" – Audio, \"8\" - Video, \"9\" – Wireless, \"10\" - Security token, \"11\" – Smartcard\r\n, \"12\" - Rubber ducky, \"13\" – Printer, \"14\" – HID.","type":"string"},"details":{"description":"System events entry additional textual details.","type":"string"}}},"AuditTrailViewWrapper":{"description":"Audit trails filtered results with meta data.","type":"object","properties":{"recordsTotal":{"format":"int32","description":"The total number of audit trail entries.","type":"integer"},"recordsFiltered":{"format":"int32","description":"The number of listed audit trail entries after applying the query filters.","type":"integer"},"data":{"description":"Audit Trails Result.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/AuditTrailViewResource"}}}},"AuditTrailViewResource":{"description":"Audit trail result entry.","type":"object","properties":{"auditTrailID":{"format":"int32","description":"Unique identifier of the audit trail entry.","type":"integer"},"userName":{"description":"Audit trail entry user information.","type":"string"},"creationTime":{"format":"date-time","description":"Audit trail entry creation date and time. Format yyyy-MM-dd hh:ss:mm.MI.","type":"string"},"eventCode":{"description":"CEF Signature ID.","type":"string"},"severity":{"format":"int32","description":"Audit trail entry severity indication. Supported values are Emergency, Alert, Critical, Error, Warning, Notice, Informational, Debug.","type":"integer"},"description":{"description":"Audit trail entry textual description.","type":"string"},"details":{"description":"Audit trail entry additional textual details.","type":"string"},"category":{"description":"Audit trail entry category. Currently supported categories are USB, Network, User, System.","type":"string"}}},"SwitchDataViewResource":{"type":"object","properties":{"switchID":{"description":"Temporary value which is the IP address when created, Then replaced with HwAddress + SerialNumber(after successfully reading from switch) (i.e.00af1fdcdf00_FOC2002U16Z).","type":"string"},"assignedName":{"description":"Switch assigned name(same as cli prompt string).","type":"string"},"model":{"description":"Switch model string.","type":"string"},"serialNumber":{"description":"Serial number string.","type":"string"},"hwAddress":{"description":"Hardware address string.","type":"string"},"hwVersion":{"description":"Hardware version string.","type":"string"},"bootInfo":{"description":"Boot information string.","type":"string"},"ios":{"description":"Switch SW version.","type":"string"},"versionId":{"description":"Version id string.","type":"string"},"cpuEnv":{"description":"CPU environment string.","type":"string"},"image":{"description":"Image string.","type":"string"},"nvInfo":{"description":"Nv info string.","type":"string"},"numOfPorts":{"format":"int32","description":"Number of ports.","type":"integer"},"numOfVirPorts":{"format":"int32","description":"Number of virtual ports.","type":"integer"},"numOfFePorts":{"format":"int32","description":"Number of Fast Ethernet ports.","type":"integer"},"numOfGbPorts":{"format":"int32","description":"Num Of Gb Ports.","type":"integer"},"numOf10gPorts":{"format":"int32","description":"Num Of 10g Ports","type":"integer"},"isStack":{"description":"Is switch in stack of few switches.","type":"boolean"},"status":{"format":"int32","description":"Switch status, values are:\r\n0 - OK, 1 - Alarmed, 2 - Acknowledge , 3 - login/enable failure, 6 - Connection Error, 8 - Initialized, 9 - Data validity error, 10 - Unsupported, 11- Unsupported model, 12 - Unsupported version","type":"integer"},"statusDescription":{"description":"Status description string.","type":"string"},"connectionData":{"$ref":"#/definitions/SwitchConnectionViewResource","description":"Connection details."},"ports":{"description":"Switch ports.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/SwitchPortViewResource"}},"stacks":{"description":"Stack connections details.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/SwitchStackItemViewResource"}},"badPorts":{"description":"Ports with alarms.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/SwitchPortViewResource"}}}},"SwitchConnectionViewResource":{"type":"object","properties":{"switchID":{"description":"Temporary value which is the IP address when created, \r\nThen replaced with HwAddress + SerialNumber(after successfully reading from switch) \r\n(i.e. 00af1fdcdf00_FOC2002U16Z)","type":"string"},"ipAddress":{"description":"IP Address.","type":"string"},"protocol":{"description":"Telnet/SSH.","type":"string"},"user":{"description":"User name.","type":"string"},"password":{"description":"Password.","type":"string"},"enablePass":{"description":"Enable Password.","type":"string"},"pollingGroupId":{"format":"int32","description":"Polling Group  Id.","type":"integer"},"pollingGroupUiStr":{"description":"Polling group display string.","type":"string"},"lastUpdated":{"description":"Last Updated time.","type":"string"},"lastPolled":{"format":"date-time","description":"Last Polled time.","type":"string"},"lastPollingPeriodSec":{"format":"int32","description":"Last polling time took to poll all switch data in seconds.","type":"integer"},"swPollingStatus":{"format":"int32","description":"0 - N/A\r\n10 - Temp ID (Init): never polled, ID == IpAddress.\r\n11 - Temp ID (Polled): ID is yet IPAddress, i.e. SwDataStatus is connection error or auth failure\r\n20- Normal (Real ID) \r\n21- Ghost (Real ID): old one, not exists anymore, means that there is another switch (Real) with same IP address.","type":"integer"}}},"SwitchPortViewResource":{"type":"object","properties":{"switchID":{"description":"Temporary value which is the IP address when created, Then replaced with HwAddress + SerialNumber(after successfully reading from switch) (i.e.00af1fdcdf00_FOC2002U16Z).","type":"string"},"portID":{"description":"Cisco CLI interface name (i.e. Fa0/14, Gi1/0/33).","type":"string"},"portNumber":{"format":"int32","description":"Port number (running order) in the switch.","type":"integer"},"stackId":{"format":"int32","description":"Indicate if this switch instance of part of a switch stack.\r\n-1 for no stack.","type":"integer"},"assignedName":{"description":"Textual name, as assigned by the administrator and read from the switch.","type":"string"},"portStatusString":{"description":"Port Status String.","type":"string"},"link":{"description":"Switch port link status, as read from the switch using 'show interfaces status'.\r\ntrue is connected and false os disconnected.","type":"boolean","readOnly":true},"lastConnected":{"description":"The last time this switch was polled.","type":"string"},"cdpPlatforms":{"description":"CDP information of the port.","type":"string"},"localPhyInfo":{"description":"Textual lookup, vendor and if possible model – lookup from Chipset.","type":"string"},"portMedia":{"format":"int32","description":"Copper, Fiber– enumeration(int)","type":"integer"},"portType":{"format":"int32","description":"10Mb, Fast Ethernet, Gigabit Ethernet, TenGig Ethernet – enumeration(int).","type":"integer"},"fpVersion":{"format":"int32","description":"Sepio Port fingerprint version.","type":"integer"},"fpData":{"description":"Sepio port fingerprint data.","type":"string"},"portSeverityGrade":{"format":"int32","description":"Derived port risk level.","type":"integer"},"portSecurityRank":{"format":"int32","description":"Derived port security rank.","type":"integer"},"identifiedString":{"description":"Additional details regarding the detected or suspected network element connected to the switch port.","type":"string"},"ttString":{"description":"Port tooltip information (on Sepio Prime user interface).","uniqueItems":false,"type":"array","items":{"type":"string"}},"chipset":{"description":"Port Chipset info.","type":"string"},"alarmed":{"description":"Is port alarmed.","type":"boolean"},"switchIp":{"description":"IP Address of the switch.","type":"string"},"switchName":{"description":"Switch Name.","type":"string"},"portAdminStatus":{"format":"int32","description":"Port admin status - numeric enumeration.","type":"integer"},"portAdminStatusStr":{"description":"Port Admin Status - string indication.","type":"string"},"ackMAC":{"description":"The MAC address that was acknowledged (as part of alarm acknowlegement) on this port.","type":"string"},"cmdBy":{"description":"User indication (as part of alarm acknowlegement) on this port.","maxLength":100,"minLength":0,"type":"string"},"cmdTime":{"description":"Time indication (as part of alarm acknowlegement) on this port.","type":"string"},"cmdComment":{"description":"Free text comment (as part of alarm acknowlegement) on this port.","maxLength":120,"minLength":0,"type":"string"},"cmdExpiryTime":{"description":"Indication of the expiry time for timed acknowlegde operations.","type":"string"},"noMac":{"description":"Does this port do not have any detected MAC address.","type":"boolean"},"linkPartnerData":{"description":"List of detected MAC addresses on the port.","type":"string"},"portMacsDataCount":{"format":"int32","description":"Numnber of detected MAC addresses on the port.","type":"integer"},"linkPartnerInfo":{"$ref":"#/definitions/LinkPartnerInfo","description":"Mostly Sepio classification information of the device(s) connected to this port."},"linkPartnerCdp":{"description":"Mostly CDP information of the device(s) connected to this port.","type":"string"}}},"SwitchStackItemViewResource":{"type":"object","properties":{"switchID":{"description":"Temporary value which is the IP address when created, Then replaced with HwAddress + SerialNumber(after successfully reading from switch) (i.e.00af1fdcdf00_FOC2002U16Z).","type":"string"},"stackID":{"format":"int32","description":"stuck identifier 1 to x.","type":"integer"},"model":{"description":"Model string.","type":"string"},"serialNumber":{"description":"Serial number string.","type":"string"},"hwVersion":{"description":"Hardware version string.","type":"string"},"bootInfo":{"description":"Boot information string.","type":"string"},"ios":{"description":"SW version string.","type":"string"},"image":{"description":"Image string.","type":"string"},"numOfPorts":{"format":"int32","description":"Number of ports.","type":"integer"},"itemType":{"description":"Item type string.","type":"string"}}},"LinkPartnerInfo":{"type":"object","properties":{"portMacsData":{"description":"Chained list of MAC addresses detected on this switch port.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/PortNetworkElement"}},"cdpPlatforms":{"description":"Chained list of CDP platforms detected on this switch port.","uniqueItems":false,"type":"array","items":{"type":"string"}}}},"PortNetworkElement":{"type":"object","properties":{"mac":{"description":"Mac Address","type":"string"},"vendor":{"description":"Vendor of the peripheral","type":"string"},"sepioClassification":{"description":"Sepio Classification","type":"string"},"agentLocalIpAddress":{"description":"The IP Address of agent that is connected to this port","type":"string"},"agentHostIdentifier":{"description":"The Host Identifier of agent that is connected to this port","type":"string"},"agentModel":{"description":"The PC model of agent that is connected to this port","type":"string"}}},"TableWrapper[SwitchPortViewResource]":{"description":"Table entries with meta data","type":"object","properties":{"recordsTotal":{"format":"int32","type":"integer"},"recordsFiltered":{"format":"int32","type":"integer"},"data":{"uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/SwitchPortViewResource"}}}},"PeripheralViewDataWrapper":{"type":"object","properties":{"recordsTotal":{"format":"int32","description":"The total number of peripheral devices.","type":"integer"},"recordsFiltered":{"format":"int32","description":"The number of listed peripheral devices after applying the query filters.","type":"integer"},"data":{"description":"Result Peripherals.","uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/PeripheralViewData"}}}},"PeripheralViewData":{"type":"object","properties":{"uuid":{"description":"Agent ID","type":"string"},"hostIdentifier":{"description":"Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance","type":"string"},"hostIp":{"description":"Host Ip","type":"string"},"deviceID":{"description":"OS level device identifier.","type":"string"},"description":{"description":"Textual description of the peripheral device.","type":"string"},"status":{"description":"Status","type":"string"},"manufacturer":{"description":"Manufacturer’s textual name (when applicable) of the peripheral device.","type":"string"},"caption":{"description":"OS name information of the peripheral device.","type":"string"},"vid":{"description":"USB vendor ID of the peripheral device.","type":"string"},"pid":{"description":"USB product ID of the peripheral device.","type":"string"},"serialNumber":{"description":"Peripheral device serial number","type":"string"},"classCode":{"description":"USB standard Class of the peripheral device.","type":"string"},"subclassCode":{"description":"USB standard Protocol of the peripheral device.","type":"string"},"uniqueSerial":{"description":"A boolean indicator stating of the device serial number is a hardware derived value (USB string descriptor) or an OS generated value.","type":"boolean"},"guiSerial":{"description":"USB serial number (formatted to the system GUI) of the peripheral device.","type":"string"},"devIcon":{"format":"int32","description":"Icon enumeration of the peripheral device. Supported values are X,Y,Z and so","type":"integer"},"protocolCode":{"description":"USB standard Protocol of the peripheral device.","type":"string"},"hierarchy":{"format":"int32","description":"Indicates the hierarchy level of USB device or interface. Supported values are 0 for a composite USB device parent or a non-composite USB device, 1 for an interface that is part of a composite device.","type":"integer"},"isDisabled":{"description":"Is Disabled","type":"boolean"},"approved":{"description":"Indictates whether peripheral is approved by Administrator","type":"boolean"},"present":{"description":"The number of peripheral devices that are approved and are currently connected to the workstation (running Sepio Agent).","type":"boolean"},"guiVid":{"description":"USB vendor ID (formatted to the system GUI) of the peripheral device.","type":"string"},"guiPid":{"description":"USB product ID (formatted to the system GUI) of the peripheral device.","type":"string"},"parentDeviceID":{"description":"OS level parent device identifier.\r\nIndicates the hierarchy level of USB device or interface. \r\nSupported values are NULL/Empty for a composite USB device parent or a non-composite USB device, \r\notherwise the parent ID for an interface that is part of a composite device.","type":"string"},"severity":{"format":"int32","description":"A risk level indication. A value between 0 to 100 that is: \r\n0 if this peripheral device is approved in all of the Agents.\r\n70 if this peripheral device is approved only in some of the Agents.\r\n100 if this peripheral device is not approved in any of the Agents.","type":"integer"},"inAction":{"description":"There is pending command for Sepio Agent waiting to execute.","type":"boolean"},"vulnerability":{"description":"A string indication of a known device vulnerability (if exists).","type":"string"},"configManagerErrorCode":{"format":"int32","description":"Win32 Configuration Manager error code","type":"integer"},"adminStatus":{"description":"Admin Status","type":"string"},"fpData":{"description":"Sepio specific fingerprint data.","type":"string"},"lesserFpData":{"description":"Additional Sepio specific fingerprint data.","type":"string"},"agentServiceVersion":{"description":"Agent Service Version","type":"string"}}},"PeripheralCommandsViewResource":{"type":"object","properties":{"opCode":{"type":"string"},"peripheralsIds":{"uniqueItems":false,"type":"array","items":{"$ref":"#/definitions/PeripheralIdData"}}}},"PeripheralIdData":{"type":"object","properties":{"uuid":{"type":"string"},"deviceId":{"type":"string"}}}},"securityDefinitions":{"Bearer":{"name":"Authorization","in":"header","type":"apiKey","description":"Please enter into field 'Authorization' the word 'Bearer' following by space and JWT"}}}
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0 (2.5.26.0)",
+		"title": "Sepio Prime API",
+		"description": "Sepio Prime API methods and models",
+		"contact": {
+			"name": "Support Team",
+			"email": "support@sepio.systems"
+		}
+	},
+	"paths": {
+		"/prime/webui/peripherals/command": {
+			"post": {
+				"tags": [
+					"Peripherals"
+				],
+				"operationId": "UpdateAgentsPeripherCommands",
+				"consumes": [
+					"application/json-patch+json",
+					"application/json",
+					"text/json",
+					"application/*+json"
+				],
+				"produces": [],
+				"parameters": [
+					{
+						"name": "viewReq",
+						"in": "body",
+						"required": false,
+						"schema": {
+							"$ref": "#/definitions/PeripheralCommandsViewResource"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"AgentsViewDataWrapper": {
+			"type": "object",
+			"properties": {
+				"recordsTotal": {
+					"format": "int32",
+					"description": "The total number of Sepio Agents",
+					"type": "integer"
+				},
+				"recordsFiltered": {
+					"format": "int32",
+					"description": "The number of listed Sepio Agents after applying the query filters",
+					"type": "integer"
+				},
+				"data": {
+					"description": "Result agents",
+					"uniqueItems": false,
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/AgentViewData"
+					}
+				}
+			}
+		},
+		"AgentViewData": {
+			"description": "Resource for agent view i.e agents table row.",
+			"type": "object",
+			"properties": {
+				"hostIdentifier": {
+					"description": "Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance",
+					"type": "string"
+				},
+				"localIpAddress": {
+					"description": "Sepio Agent’s IP address.",
+					"type": "string"
+				},
+				"uuid": {
+					"description": "Sepio Agent’s instance unique identifier.",
+					"type": "string"
+				},
+				"operationalStatus": {
+					"description": "Current operational status of Sepio Agent. Supported values are Armed, Free.",
+					"type": "string"
+				},
+				"connectionStatus": {
+					"description": "Indication of connectivity between the Sepio Agent and Sepio Prime.\r\nSupported values are Connected, Disconnected.",
+					"type": "string"
+				},
+				"approvedAndPresent": {
+					"format": "int32",
+					"description": "The number of peripheral devices that are approved and are currently connected to the workstation (running Sepio Agent).",
+					"type": "integer"
+				},
+				"approvedAndDisconnected": {
+					"format": "int32",
+					"description": "The number of peripheral devices that are approved and are currently disconnected from the workstation (running Sepio Agent).",
+					"type": "integer"
+				},
+				"notApproved": {
+					"format": "int32",
+					"description": "Number of peripherals devices that are not approved.",
+					"type": "integer"
+				},
+				"latestEventText": {
+					"description": "Textual details of the last event of the Agent.",
+					"type": "string"
+				},
+				"latestMinus1EventText": {
+					"description": "Textual details of the event before the last event of the Agent.",
+					"type": "string"
+				},
+				"latestMinus2EventText": {
+					"description": "Textual details of the 3rd newest event of the Agent.",
+					"type": "string"
+				},
+				"serviceVersion": {
+					"description": "Sepio Agent service version.",
+					"type": "string"
+				},
+				"lastUpdated": {
+					"format": "date-time",
+					"description": "Date and time indication of the last time Sepio Agent communicated with Sepio Prime.",
+					"type": "string"
+				},
+				"licenseStatus": {
+					"description": "License status string.",
+					"type": "string"
+				},
+				"expirationDate": {
+					"description": "Sepio Agent’s license expiry date.",
+					"type": "string"
+				},
+				"lastConfiguered": {
+					"format": "date-time",
+					"description": "Date and time indication of the last configuration update of an Agent.",
+					"type": "string"
+				},
+				"kbDriverVersion": {
+					"description": "Sepio Agent’s kernel driver version.",
+					"type": "string"
+				},
+				"licenseAccountId": {
+					"description": "License Account Id.",
+					"maxLength": 100,
+					"minLength": 0,
+					"type": "string"
+				},
+				"licenseAccountName": {
+					"description": "License Account Name.",
+					"maxLength": 100,
+					"minLength": 0,
+					"type": "string"
+				},
+				"severity": {
+					"format": "int32",
+					"description": "Agent entry severity, numeric values are:\r\n\"0\" for disconnected device.\r\n\"10\" for device with all peripherals approved.\r\n\"70\" At list one peripheral not approved and agent in Free mode.\r\n\"100\" At list one peripheral not approved and agent in Armed mode.",
+					"type": "integer"
+				},
+				"inAction": {
+					"description": "Indicate that there is pending command for Agent waiting to execute.",
+					"type": "boolean"
+				},
+				"pcModel": {
+					"description": "Hardware (PC platform) information of the workstation running Sepio Agent.",
+					"type": "string"
+				},
+				"nicsText": {
+					"description": "Chained list of the network interface cards (all) of a workstation running Sepio Prime.",
+					"type": "string"
+				},
+				"modelToolTip": {
+					"description": "Hardware (PC platform) ToolTip information.",
+					"type": "string"
+				},
+				"containsVulnerablePeripheralOrWLV": {
+					"description": "Indicate whether the Agent contains one or more peripheral that is vulnerable or white list violation.",
+					"type": "string"
+				},
+				"osVersion": {
+					"description": "Operating system information of the workstation running Sepio Agent.",
+					"type": "string"
+				},
+				"runningMode": {
+					"description": "Running Mode Flags.",
+					"type": "string"
+				},
+				"connectedSwitchIp": {
+					"description": "When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the IP address of the switch.",
+					"type": "string"
+				},
+				"connectedSwitchName": {
+					"description": "When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the assigned name of the switch.",
+					"type": "string"
+				},
+				"connectedPortId": {
+					"description": "When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the port number in the switch.",
+					"type": "string"
+				},
+				"connectedPortName": {
+					"description": "When a workstation running Sepio Agent is connected to a switch port that is monitored by Sepio Prime, this field will indicate the port ID in the switch.",
+					"type": "string"
+				},
+				"ethernetsCount": {
+					"format": "int32",
+					"description": "Number of agent interfaces as seen at network switch ports.",
+					"type": "integer"
+				}
+			}
+		},
+		"AgentPendingConfigurationWrapper": {
+			"type": "object",
+			"properties": {
+				"uuid": {
+					"type": "string"
+				},
+				"agentConfigViewResource": {
+					"$ref": "#/definitions/AgentPendingConfigViewResource"
+				}
+			}
+		},
+		"AgentPendingConfigViewResource": {
+			"type": "object",
+			"properties": {
+				"isSystemArmed": {
+					"type": "string"
+				},
+				"isSystemLocked": {
+					"type": "string"
+				},
+				"centralizedConsoleIP": {
+					"type": "string"
+				}
+			}
+		},
+		"PeripheralAggregatedViewWrapper": {
+			"type": "object",
+			"properties": {
+				"recordsTotal": {
+					"format": "int32",
+					"description": "The total number of aggregated peripherals.",
+					"type": "integer"
+				},
+				"recordsFiltered": {
+					"format": "int32",
+					"description": "The number of listed aggregated peripherals after applying the query filters",
+					"type": "integer"
+				},
+				"data": {
+					"description": "Result aggregated peripherals",
+					"uniqueItems": false,
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PeripheralAggregatedViewData"
+					}
+				}
+			}
+		},
+		"PeripheralAggregatedViewData": {
+			"description": "Aggregated perippherals data per peripheral identifier (type)",
+			"type": "object",
+			"properties": {
+				"description": {
+					"description": "Textual description of the peripheral device.",
+					"type": "string"
+				},
+				"manufacturer": {
+					"description": "Manufacturer’s textual name (when applicable) of the peripheral device.",
+					"type": "string"
+				},
+				"caption": {
+					"description": "OS name information of the peripheral device.",
+					"type": "string"
+				},
+				"creationClassName": {
+					"description": "Additional OS info.",
+					"type": "string"
+				},
+				"deviceID": {
+					"description": "OS level device identifier.",
+					"type": "string"
+				},
+				"vid": {
+					"description": "USB vendor ID of the peripheral device.",
+					"type": "string"
+				},
+				"pid": {
+					"description": "USB product ID of the peripheral device.",
+					"type": "string"
+				},
+				"classCode": {
+					"description": "USB standard Class of the peripheral device.",
+					"type": "string"
+				},
+				"subclassCode": {
+					"description": "USB standard Protocol of the peripheral device.",
+					"type": "string"
+				},
+				"devIcon": {
+					"format": "int32",
+					"description": " Icon enumeration of the peripheral device. Numerical values are:\r\n \"1\" - Keyboard, \"2\" - Mouse, \"3\" – Storage, \"4\" – Hub, \"5\" – Communication Adapter, \r\n\"6\" – Mobile, \"7\" – Audio, \"8\" - Video, \"9\" – Wireless, \"10\" - Security token, \"11\" – Smartcard\r\n, \"12\" - Rubber ducky, \"13\" – Printer, \"14\" – HID.",
+					"type": "integer"
+				},
+				"protocolCode": {
+					"description": "USB standard Protocol of the peripheral device.",
+					"type": "string"
+				},
+				"guiVid": {
+					"description": "USB vendor ID (formatted to the system GUI) of the peripheral device.",
+					"type": "string"
+				},
+				"guiPid": {
+					"description": "USB product ID (formatted to the system GUI) of the peripheral device.",
+					"type": "string"
+				},
+				"parentDeviceID": {
+					"description": "OS level parent device identifier.",
+					"type": "string"
+				},
+				"quantity": {
+					"description": "Quantity of detected peripheral devices. For example, 200/252 means that this peripheral device exists in 200 agents and the total Agent count is 252.",
+					"type": "string"
+				},
+				"agentsHostIds": {
+					"description": "List of Agents host IDs, will be max 10 size count, others will be ignored.",
+					"uniqueItems": false,
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"severity": {
+					"format": "int32",
+					"description": "A risk level indication. A value between 0 to 100 that is: \r\n0 if this peripheral device is approved in all of the Agents.\r\n70 if this peripheral device is approved only in some of the Agents.\r\n100 if this peripheral device is not approved in any of the Agents",
+					"type": "integer"
+				},
+				"notApprovedPeripheral": {
+					"format": "int32",
+					"description": "Number of peripherals devices that are not approved.",
+					"type": "integer"
+				},
+				"vulnerability": {
+					"description": "A string indication of a known device vulnerability (if exists).",
+					"type": "string"
+				},
+				"adminStatus": {
+					"description": "Can be combination of values with '|' seperator: \r\n\"WLV\" - White List Violation, \"WLM\" - White List Match, \"BLM\" - Black List Match, \"DMD\" - Device Manager Disabled, \"FDD\" - Filter Driver Disabled\r\nFor example: \"DMD|FDD\"",
+					"type": "string"
+				}
+			}
+		},
+		"PeripheralAggCommandsViewResource": {
+			"type": "object",
+			"properties": {
+				"opCode": {
+					"type": "string"
+				},
+				"aggPeripheralsIds": {
+					"uniqueItems": false,
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"SignInRequest": {
+			"type": "object",
+			"properties": {
+				"username": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				}
+			}
+		},
+		"SignInResponse": {
+			"type": "object",
+			"properties": {
+				"token": {
+					"type": "string"
+				}
+			}
+		},
+		"PeripheralViewDataWrapper": {
+			"type": "object",
+			"properties": {
+				"recordsTotal": {
+					"format": "int32",
+					"description": "The total number of peripheral devices.",
+					"type": "integer"
+				},
+				"recordsFiltered": {
+					"format": "int32",
+					"description": "The number of listed peripheral devices after applying the query filters.",
+					"type": "integer"
+				},
+				"data": {
+					"description": "Result Peripherals.",
+					"uniqueItems": false,
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PeripheralViewData"
+					}
+				}
+			}
+		},
+		"PeripheralViewData": {
+			"type": "object",
+			"properties": {
+				"uuid": {
+					"description": "Agent ID",
+					"type": "string"
+				},
+				"hostIdentifier": {
+					"description": "Sepio Agent’s instance assigned textual name. usually derived from the HOST name of the workstation. Please note that this may change over time and is not a unique identifier of the Sepio Agent’s instance",
+					"type": "string"
+				},
+				"hostIp": {
+					"description": "Host Ip",
+					"type": "string"
+				},
+				"deviceID": {
+					"description": "OS level device identifier.",
+					"type": "string"
+				},
+				"description": {
+					"description": "Textual description of the peripheral device.",
+					"type": "string"
+				},
+				"status": {
+					"description": "Status",
+					"type": "string"
+				},
+				"manufacturer": {
+					"description": "Manufacturer’s textual name (when applicable) of the peripheral device.",
+					"type": "string"
+				},
+				"caption": {
+					"description": "OS name information of the peripheral device.",
+					"type": "string"
+				},
+				"vid": {
+					"description": "USB vendor ID of the peripheral device.",
+					"type": "string"
+				},
+				"pid": {
+					"description": "USB product ID of the peripheral device.",
+					"type": "string"
+				},
+				"serialNumber": {
+					"description": "Peripheral device serial number",
+					"type": "string"
+				},
+				"classCode": {
+					"description": "USB standard Class of the peripheral device.",
+					"type": "string"
+				},
+				"subclassCode": {
+					"description": "USB standard Protocol of the peripheral device.",
+					"type": "string"
+				},
+				"uniqueSerial": {
+					"description": "A boolean indicator stating of the device serial number is a hardware derived value (USB string descriptor) or an OS generated value.",
+					"type": "boolean"
+				},
+				"guiSerial": {
+					"description": "USB serial number (formatted to the system GUI) of the peripheral device.",
+					"type": "string"
+				},
+				"devIcon": {
+					"format": "int32",
+					"description": "Icon enumeration of the peripheral device. Supported values are X,Y,Z and so",
+					"type": "integer"
+				},
+				"protocolCode": {
+					"description": "USB standard Protocol of the peripheral device.",
+					"type": "string"
+				},
+				"hierarchy": {
+					"format": "int32",
+					"description": "Indicates the hierarchy level of USB device or interface. Supported values are 0 for a composite USB device parent or a non-composite USB device, 1 for an interface that is part of a composite device.",
+					"type": "integer"
+				},
+				"isDisabled": {
+					"description": "Is Disabled",
+					"type": "boolean"
+				},
+				"approved": {
+					"description": "Indictates whether peripheral is approved by Administrator",
+					"type": "boolean"
+				},
+				"present": {
+					"description": "The number of peripheral devices that are approved and are currently connected to the workstation (running Sepio Agent).",
+					"type": "boolean"
+				},
+				"guiVid": {
+					"description": "USB vendor ID (formatted to the system GUI) of the peripheral device.",
+					"type": "string"
+				},
+				"guiPid": {
+					"description": "USB product ID (formatted to the system GUI) of the peripheral device.",
+					"type": "string"
+				},
+				"parentDeviceID": {
+					"description": "OS level parent device identifier.\r\nIndicates the hierarchy level of USB device or interface. \r\nSupported values are NULL/Empty for a composite USB device parent or a non-composite USB device, \r\notherwise the parent ID for an interface that is part of a composite device.",
+					"type": "string"
+				},
+				"severity": {
+					"format": "int32",
+					"description": "A risk level indication. A value between 0 to 100 that is: \r\n0 if this peripheral device is approved in all of the Agents.\r\n70 if this peripheral device is approved only in some of the Agents.\r\n100 if this peripheral device is not approved in any of the Agents.",
+					"type": "integer"
+				},
+				"inAction": {
+					"description": "There is pending command for Sepio Agent waiting to execute.",
+					"type": "boolean"
+				},
+				"vulnerability": {
+					"description": "A string indication of a known device vulnerability (if exists).",
+					"type": "string"
+				},
+				"configManagerErrorCode": {
+					"format": "int32",
+					"description": "Win32 Configuration Manager error code",
+					"type": "integer"
+				},
+				"adminStatus": {
+					"description": "Admin Status",
+					"type": "string"
+				},
+				"fpData": {
+					"description": "Sepio specific fingerprint data.",
+					"type": "string"
+				},
+				"lesserFpData": {
+					"description": "Additional Sepio specific fingerprint data.",
+					"type": "string"
+				},
+				"agentServiceVersion": {
+					"description": "Agent Service Version",
+					"type": "string"
+				}
+			}
+		},
+		"PeripheralCommandsViewResource": {
+			"type": "object",
+			"properties": {
+				"opCode": {
+					"type": "string"
+				},
+				"peripheralsIds": {
+					"uniqueItems": false,
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/PeripheralIdData"
+					}
+				}
+			}
+		},
+		"PeripheralIdData": {
+			"type": "object",
+			"properties": {
+				"uuid": {
+					"type": "string"
+				},
+				"deviceId": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"securityDefinitions": {
+		"Bearer": {
+			"name": "Authorization",
+			"in": "header",
+			"type": "apiKey",
+			"description": "Please enter into field 'Authorization' the word 'Bearer' following by space and JWT"
+		}
+	}
+}
